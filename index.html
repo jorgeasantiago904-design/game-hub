@@ -6,17 +6,14 @@
   <title>Nexus Arcade & Emulator Portal</title>
   <style>
     :root {
-      --bg-color: #07090e;
-      --card-bg: #0f172a;
-      --card-hover: #1e293b;
-      --accent: #6366f1;
-      --accent-glow: rgba(99, 102, 241, 0.35);
-      --accent-secondary: #a855f7;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: rgba(255, 255, 255, 0.08);
-      --radius-lg: 16px;
-      --radius-md: 12px;
+      --bg-color: #0b0f19;        /* Solid Deep Navy/Black Background */
+      --header-bg: #111827;      /* Solid Dark Slate Header */
+      --card-bg: #1f2937;        /* Solid Dark Gray Card Area */
+      --accent-color: #3b82f6;   /* Classic Solid Blue Accent */
+      --text-main: #f9fafb;      /* Crisp White Text */
+      --text-muted: #9ca3af;     /* Muted Gray Text */
+      --border-color: #374151;   /* Clean Solid Border */
+      --radius-md: 10px;
     }
 
     * {
@@ -37,11 +34,9 @@
 
     /* HEADER & NAV */
     header {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 0.85rem 2rem;
-      border-bottom: 1px solid var(--border-color);
+      background-color: var(--header-bg);
+      padding: 1rem 2rem;
+      border-bottom: 2px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -52,12 +47,9 @@
     }
 
     .brand {
-      font-size: 1.4rem;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -65,10 +57,10 @@
 
     nav {
       display: flex;
-      gap: 0.35rem;
-      background: rgba(0, 0, 0, 0.25);
-      padding: 0.25rem;
-      border-radius: 10px;
+      gap: 0.5rem;
+      background-color: var(--bg-color);
+      padding: 0.3rem;
+      border-radius: 8px;
       border: 1px solid var(--border-color);
     }
 
@@ -76,41 +68,37 @@
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 600;
-      padding: 0.5rem 1.1rem;
-      border-radius: 8px;
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     .nav-btn.active, .nav-btn:hover {
-      color: #fff;
-      background-color: var(--accent);
-      box-shadow: 0 0 12px var(--accent-glow);
+      color: #ffffff;
+      background-color: var(--accent-color);
     }
 
     .search-box {
       width: 100%;
-      max-width: 260px;
-      position: relative;
+      max-width: 250px;
     }
 
     .search-box input {
       width: 100%;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
+      padding: 0.55rem 1rem;
+      border-radius: 6px;
       border: 1px solid var(--border-color);
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: var(--bg-color);
       color: var(--text-main);
       font-size: 0.85rem;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .search-box input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
+      border-color: var(--accent-color);
     }
 
     /* MAIN CONTAINER */
@@ -124,206 +112,87 @@
 
     .view-section {
       display: none;
-      animation: fadeIn 0.3s ease;
     }
 
     .view-section.active {
       display: block;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .section-title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 800;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      color: var(--text-main);
     }
 
-    /* REMIXED HERO BANNER (FIXED OVERLAY GRADIENT) */
-    .hero-banner {
-      position: relative;
-      width: 100%;
-      height: 380px;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      margin-bottom: 2.5rem;
-      border: 1px solid var(--border-color);
-      background-color: #000;
-      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.55;
-      filter: scale(1.02);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    /* Multi-stop seamless dark overlay (fixes bottom cut-off line) */
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg, 
-        rgba(7, 9, 14, 0) 0%, 
-        rgba(7, 9, 14, 0.2) 40%, 
-        rgba(7, 9, 14, 0.85) 75%, 
-        rgba(7, 9, 14, 1) 100%
-      );
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 2.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      max-width: 680px;
-      z-index: 2;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      background: rgba(99, 102, 241, 0.2);
-      border: 1px solid var(--accent);
-      color: #a5b4fc;
-      font-size: 0.75rem;
-      font-weight: 700;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      width: fit-content;
-    }
-
-    .hero-title {
-      font-size: 2.5rem;
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.5px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-
-    .hero-desc {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-
-    /* GRID & CARDS */
+    /* GAME GRID & FULL-BOX CARDS */
     .game-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
       gap: 1.5rem;
     }
 
     .game-card {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
       background-color: var(--card-bg);
       border-radius: var(--radius-md);
       overflow: hidden;
       border: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
       cursor: pointer;
-      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .game-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(99, 102, 241, 0.5);
-      box-shadow: 0 12px 24px -8px var(--accent-glow);
-    }
-
-    .thumbnail-container {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background-color: #000;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .thumbnail-container img {
+    .game-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      display: block;
+      transition: filter 0.55s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    .game-card:hover .thumbnail-container img {
-      transform: scale(1.05);
+    .game-card:hover img {
+      filter: brightness(0.65);
     }
 
-    .game-info {
-      padding: 1.1rem;
+    /* Slower, smooth sliding dark shadow overlay */
+    .game-info-overlay {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
-      flex: 1;
+      justify-content: flex-end;
+      padding: 1.25rem 1rem 1rem 1rem;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 65%, rgba(0, 0, 0, 0) 100%);
+      opacity: 0;
+      transform: translateY(100%);
+      transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.55s ease;
+      pointer-events: none;
+    }
+
+    .game-card:hover .game-info-overlay {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .game-title {
       font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 0.4rem;
+      color: #ffffff;
+      margin-bottom: 0.35rem;
     }
 
     .game-desc {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.35;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
-    }
-
-    /* BUTTONS */
-    .btn {
-      padding: 0.6rem 1.25rem;
-      border-radius: 8px;
-      border: none;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.88rem;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
-      color: #fff;
-      box-shadow: 0 4px 14px var(--accent-glow);
-    }
-
-    .btn-primary:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-
-    .btn-close {
-      background-color: rgba(239, 68, 68, 0.2);
-      border: 1px solid #ef4444;
-      color: #fca5a5;
-    }
-
-    .btn-close:hover {
-      background-color: #ef4444;
-      color: #fff;
     }
 
     /* MODAL OVERLAY */
@@ -331,15 +200,14 @@
       display: none;
       position: fixed;
       inset: 0;
-      background-color: rgba(3, 7, 18, 0.95);
-      backdrop-filter: blur(8px);
+      background-color: rgba(0, 0, 0, 0.95);
       z-index: 100;
       flex-direction: column;
     }
 
     .player-header {
-      padding: 0.85rem 1.75rem;
-      background-color: var(--card-bg);
+      padding: 0.85rem 1.5rem;
+      background-color: var(--header-bg);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -349,6 +217,25 @@
     .player-controls {
       display: flex;
       gap: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-color);
+      color: #fff;
+    }
+
+    .btn-close {
+      background-color: #dc2626;
+      color: #fff;
     }
 
     .iframe-container {
@@ -383,18 +270,6 @@
 
   <main>
     <section id="homeView" class="view-section active">
-      <div class="hero-banner">
-        <img id="heroImg" class="hero-bg" src="" alt="Featured Banner" />
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <span class="hero-badge">Featured Game</span>
-          <h1 class="hero-title" id="heroTitle">Loading...</h1>
-          <p class="hero-desc" id="heroDesc"></p>
-          <button class="btn btn-primary" style="width: fit-content;" onclick="launchHeroGame()">
-            <span>▶</span> Play Game
-          </button>
-        </div>
-      </div>
       <h2 class="section-title"><span>🔥</span> Featured Arcade Selection</h2>
       <div class="game-grid" id="homeGrid"></div>
     </section>
@@ -429,9 +304,6 @@
   </div>
 
   <script>
-    // ----------------------------------------------------
-    // 1. ARCADE GAMES CATALOG
-    // ----------------------------------------------------
     const arcadeGames = [
       { title: "La Madriguera", desc: "A Spanish indie game about a lazy bear trying to reach for his honey.", url: "https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/games/468.html", image: "https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/images/468.jpg" },
       { title: "Geometry Dash", desc: "Jump, fly, and flip your way through dangerous passages and spiky obstacles in this rhythm platformer.", url: "https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/games/417.html", image: "https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/images/417.jpg" },
@@ -851,104 +723,50 @@
       { title: "Five Nights at Epstein", desc: "A secret escape game where you navigate through mysterious locations", url: "https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/games/2019.html", secret: true }
     ];
 
-    // ----------------------------------------------------
-    // 2. NINTENDO GAMES (Add custom NES/SNES/GBA game objects here)
-    // ----------------------------------------------------
     const nintendoGames = [
-      { 
-        title: "NES Console Engine", 
-        desc: "Classic 8-bit NES emulation system. Add your custom Nintendo ROM entries in the source JS array.", 
-        url: "https://emulatorjs.org/demo.html?system=nes", 
-        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop" 
-      }
+      { title: "Pokemon Firered", desc: "Classic Pokemon adventure remake", url: "https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/games/247.html", image: "https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/images/72.jpg" }
     ];
 
-    // ----------------------------------------------------
-    // 3. PLAYSTATION GAMES (Add custom PS1 game objects here)
-    // ----------------------------------------------------
     const playstationGames = [
-      { 
-        title: "PS1 Console Engine", 
-        desc: "Classic 32-bit PlayStation emulation system. Add your custom PlayStation ROM entries in the source JS array.", 
-        url: "https://emulatorjs.org/demo.html?system=psx", 
-        image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop" 
-      }
+      { title: "Metal Gear Solid", desc: "A first-person stealth action game", url: "https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/games/466.html", image: "https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/images/466.jpg" }
     ];
 
-    let currentHeroIndex = 0;
-
-    function fixRawUrl(rawUrl) {
-      if (!rawUrl) return '';
-      if (rawUrl.includes('raw.githubusercontent.com')) {
-        return rawUrl.replace('raw.githubusercontent.com', 'raw.githack.com');
+    function fixRawUrl(url) {
+      if (url.includes('raw.githubusercontent.com') && url.endsWith('.html')) {
+        return 'https://htmlpreview.github.io/?' + url;
       }
-      return rawUrl;
+      return url;
     }
 
-    // Switch between navigation tabs
-    function switchTab(tabName) {
-      const navBtns = document.querySelectorAll('.nav-btn');
-      const sections = document.querySelectorAll('.view-section');
+    function switchTab(tabId) {
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
 
-      navBtns.forEach(btn => btn.classList.remove('active'));
-      sections.forEach(sec => sec.classList.remove('active'));
-
-      const tabMap = {
-        'home': { idx: 0, secId: 'homeView' },
-        'arcade': { idx: 1, secId: 'arcadeView' },
-        'nintendo': { idx: 2, secId: 'nintendoView' },
-        'playstation': { idx: 3, secId: 'playstationView' }
-      };
-
-      const target = tabMap[tabName];
-      if (target) {
-        navBtns[target.idx].classList.add('active');
-        document.getElementById(target.secId).classList.add('active');
-      }
+      event.target.classList.add('active');
+      document.getElementById(tabId + 'View').classList.add('active');
     }
 
-    // Seamless Hero Carousel
-    function updateHero() {
-      if (arcadeGames.length === 0) return;
-      const game = arcadeGames[currentHeroIndex];
-      document.getElementById('heroTitle').innerText = game.title;
-      document.getElementById('heroDesc').innerText = game.desc;
-      document.getElementById('heroImg').src = game.image;
-    }
+    function renderGrid(gridId, gamesList) {
+      const container = document.getElementById(gridId);
+      if (!container) return;
+      container.innerHTML = '';
 
-    function autoRotateHero() {
-      currentHeroIndex = (currentHeroIndex + 1) % arcadeGames.length;
-      updateHero();
-    }
-
-    function launchHeroGame() {
-      launchGame(arcadeGames[currentHeroIndex]);
-    }
-
-    // Render Grid Cards
-    function renderGrid(targetId, gameList) {
-      const grid = document.getElementById(targetId);
-      grid.innerHTML = '';
-
-      gameList.forEach(game => {
+      gamesList.forEach(game => {
         const card = document.createElement('div');
         card.className = 'game-card';
         card.onclick = () => launchGame(game);
 
         card.innerHTML = `
-          <div class="thumbnail-container">
-            <img src="${game.image}" alt="${game.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x225?text=No+Image'" />
-          </div>
-          <div class="game-info">
+          <img src="${game.image}" alt="${game.title}" loading="lazy" />
+          <div class="game-info-overlay">
             <div class="game-title">${game.title}</div>
-            <div class="game-desc">${game.desc || 'No description provided.'}</div>
+            <div class="game-desc">${game.desc}</div>
           </div>
         `;
-        grid.appendChild(card);
+        container.appendChild(card);
       });
     }
 
-    // Live Search Filter Across All Tabs
     function filterAllGrids() {
       const query = document.getElementById('searchInput').value.toLowerCase();
       const filterFn = list => list.filter(g => 
@@ -962,7 +780,6 @@
       renderGrid('playstationGrid', filterFn(playstationGames));
     }
 
-    // Launch overlay modal
     function launchGame(game) {
       const playableUrl = fixRawUrl(game.url);
       document.getElementById('activeGameTitle').innerText = game.title;
@@ -983,10 +800,6 @@
         iframe.webkitRequestFullscreen();
       }
     }
-
-    // Initial setup
-    updateHero();
-    setInterval(autoRotateHero, 4500);
 
     renderGrid('homeGrid', arcadeGames);
     renderGrid('arcadeGrid', arcadeGames);
