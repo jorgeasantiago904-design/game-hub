@@ -3,13 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hydra Game Hub</title>
+  <title>GameHub</title>
   <style>
+    :root {
+      --bg-dark: #0a0a0c;
+      --bg-card: #141418;
+      --bg-card-hover: #1c1c22;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.2);
+      --text-main: #ffffff;
+      --text-muted: #8e8e9a;
+      --accent-gray: #2e2e36;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     /* Custom Scrollbar */
@@ -17,19 +28,19 @@
       width: 8px;
     }
     ::-webkit-scrollbar-track {
-      background: #0f0f12;
+      background: var(--bg-dark);
     }
     ::-webkit-scrollbar-thumb {
-      background: #2a2a34;
+      background: #25252b;
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #7289da;
+      background: #40404a;
     }
 
     body {
-      background-color: #0f0f12;
-      color: #f1f1f1;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -37,7 +48,7 @@
       overflow-x: hidden;
     }
 
-    /* Fullscreen Dynamic Hover Background */
+    /* Dynamic Hover Background Overlay */
     .bg-hover-overlay {
       position: fixed;
       top: 0;
@@ -46,9 +57,9 @@
       height: 100vh;
       background-size: cover;
       background-position: center;
-      filter: blur(32px) brightness(0.2);
+      filter: blur(40px) brightness(0.12) grayscale(0.5);
       opacity: 0;
-      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-image 0.5s ease;
+      transition: opacity 0.5s ease, background-image 0.5s ease;
       z-index: 0;
       pointer-events: none;
     }
@@ -57,15 +68,16 @@
       opacity: 1;
     }
 
+    /* Header */
     header {
-      background-color: rgba(18, 18, 22, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 16px 32px;
+      background-color: rgba(10, 10, 12, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 16px 36px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid var(--border-subtle);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -75,20 +87,18 @@
     .header-left {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 32px;
     }
 
     .logo {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #a7b5ff, #7289da);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #ffffff;
       letter-spacing: -0.5px;
       white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .logo img {
@@ -96,24 +106,24 @@
       height: 28px;
     }
 
-    /* Category Navigation Tabs */
+    /* Navigation Tabs */
     .nav-tabs {
       display: flex;
       align-items: center;
-      gap: 6px;
-      background-color: rgba(0, 0, 0, 0.4);
+      gap: 4px;
+      background-color: rgba(255, 255, 255, 0.04);
       padding: 4px;
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      border: 1px solid var(--border-subtle);
     }
 
     .tab-btn {
       background: none;
       border: none;
-      color: #9090a0;
+      color: var(--text-muted);
       padding: 8px 18px;
       border-radius: 20px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.25s ease;
@@ -124,20 +134,21 @@
     }
 
     .tab-btn img {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
     }
 
     .tab-btn:hover {
-      color: #fff;
+      color: #ffffff;
     }
 
     .tab-btn.active {
-      background-color: #7289da;
-      color: #ffffff;
-      box-shadow: 0 4px 14px rgba(114, 137, 218, 0.35);
+      background-color: #ffffff;
+      color: #000000;
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
     }
 
+    /* Search Container */
     .search-container {
       display: flex;
       align-items: center;
@@ -145,51 +156,71 @@
     }
 
     .search-box {
+      position: relative;
       width: 250px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box img {
+      position: absolute;
+      left: 14px;
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+      pointer-events: none;
     }
 
     .search-box input {
       width: 100%;
-      padding: 9px 18px;
+      padding: 9px 18px 9px 38px;
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      background-color: rgba(255, 255, 255, 0.03);
       color: #fff;
       outline: none;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       transition: all 0.25s ease;
     }
 
     .search-box input:focus {
-      border-color: #7289da;
-      background-color: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 0 12px rgba(114, 137, 218, 0.2);
+      border-color: var(--border-light);
+      background-color: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
     }
 
     .game-count-badge {
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #a0a0b0;
-      padding: 7px 16px;
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 8px 16px;
       border-radius: 20px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .game-count-badge img {
+      width: 16px;
+      height: 16px;
     }
 
     .game-count-badge span {
-      color: #7289da;
+      color: #ffffff;
       font-weight: 700;
     }
 
     main {
-      padding: 32px;
+      padding: 36px;
       flex-grow: 1;
       position: relative;
       z-index: 1;
     }
 
-    /* Uniform Grid System */
+    /* Grid System */
     .games-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -197,27 +228,28 @@
       width: 100%;
     }
 
-    /* Rectangular Card Container */
+    /* Game Card */
     .game-card {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 10;
-      background-color: #16161a;
-      border-radius: 14px;
+      background-color: var(--bg-card);
+      border-radius: 12px;
       overflow: hidden;
       cursor: pointer;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
       isolation: isolate;
       transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .game-card:hover {
-      transform: translateY(-6px) scale(1.01);
-      border-color: rgba(114, 137, 218, 0.6);
-      box-shadow: 0 12px 28px rgba(114, 137, 218, 0.22);
+      transform: translateY(-5px);
+      border-color: var(--border-light);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
     }
 
+    /* Full Color Thumbnail */
     .card-thumb {
       width: 100%;
       height: 100%;
@@ -228,21 +260,21 @@
     }
 
     .game-card:hover .card-thumb {
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
 
     .card-badge {
       position: absolute;
       top: 10px;
       right: 10px;
-      background-color: rgba(10, 10, 14, 0.75);
+      background-color: rgba(10, 10, 12, 0.85);
       backdrop-filter: blur(8px);
-      color: #7289da;
-      font-size: 0.68rem;
-      font-weight: 800;
-      padding: 4px 9px;
-      border-radius: 6px;
-      border: 1px solid rgba(114, 137, 218, 0.3);
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
       text-transform: uppercase;
       letter-spacing: 0.5px;
       z-index: 2;
@@ -253,8 +285,8 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 75%;
-      background: linear-gradient(to top, rgba(10, 10, 14, 0.95) 0%, rgba(10, 10, 14, 0.6) 60%, rgba(10, 10, 14, 0) 100%);
+      height: 80%;
+      background: linear-gradient(to top, rgba(10, 10, 12, 0.95) 0%, rgba(10, 10, 12, 0.6) 60%, rgba(10, 10, 12, 0) 100%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -270,10 +302,9 @@
 
     .card-title {
       color: #ffffff;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 700;
       line-height: 1.25;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
@@ -281,8 +312,8 @@
     }
 
     .card-desc {
-      color: #a0a0b0;
-      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
       line-height: 1.35;
       margin-top: 4px;
       display: -webkit-box;
@@ -291,14 +322,14 @@
       overflow: hidden;
     }
 
-    /* Fullscreen Modal Styling */
+    /* Modal Player Styling */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: #0b0b0e;
+      background-color: #000000;
       display: none;
       z-index: 1000;
       opacity: 0;
@@ -313,7 +344,7 @@
     .player-container {
       width: 100vw;
       height: 100vh;
-      background-color: #0b0b0e;
+      background-color: #000000;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -321,12 +352,12 @@
 
     .player-header {
       padding: 14px 28px;
-      background-color: rgba(18, 18, 22, 0.95);
+      background-color: rgba(14, 14, 18, 0.95);
       backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid var(--border-subtle);
       z-index: 10;
     }
 
@@ -338,13 +369,13 @@
 
     .game-title-display {
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: #fff;
     }
 
     .game-desc-display {
-      font-size: 0.82rem;
-      color: #8a8a9a;
+      font-size: 0.8rem;
+      color: var(--text-muted);
       margin-top: 2px;
       white-space: nowrap;
       overflow: hidden;
@@ -359,9 +390,9 @@
     .btn {
       padding: 8px 16px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       cursor: pointer;
       color: #fff;
       display: flex;
@@ -371,24 +402,24 @@
     }
 
     .btn img {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
     }
 
     .btn-secondary { 
       background-color: rgba(255, 255, 255, 0.08); 
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-subtle);
     }
     .btn-secondary:hover { 
       background-color: rgba(255, 255, 255, 0.15); 
     }
 
     .btn-danger { 
-      background-color: rgba(231, 76, 60, 0.85); 
+      background-color: #2e2e36; 
+      border: 1px solid var(--border-subtle);
     }
     .btn-danger:hover { 
-      background-color: #e74c3c; 
-      box-shadow: 0 0 12px rgba(231, 76, 60, 0.4);
+      background-color: #40404a; 
     }
 
     .iframe-wrapper {
@@ -405,15 +436,15 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: #0b0b0e;
+      background: var(--bg-dark);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 16px;
       z-index: 2;
-      color: #7289da;
-      font-size: 1.15rem;
+      color: #ffffff;
+      font-size: 1.05rem;
       font-weight: 600;
     }
 
@@ -423,12 +454,12 @@
       gap: 8px;
     }
 
-    .spinner {
-      width: 42px;
-      height: 42px;
-      border: 4px solid rgba(114, 137, 218, 0.2);
-      border-top-color: #7289da;
-      border-radius: 50%;
+    .runner-icon {
+      width: 48px;
+      height: 48px;
+    }
+
+    .runner-icon.spinner {
       animation: spin 0.8s linear infinite;
     }
 
@@ -448,10 +479,10 @@
 
     .status-msg {
       text-align: center;
-      color: #888;
+      color: var(--text-muted);
       grid-column: 1 / -1;
       padding: 60px;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
   </style>
 </head>
@@ -462,22 +493,33 @@
   <header>
     <div class="header-left">
       <div class="logo">
-        <img src="https://img.icons8.com/color/48/game-controller.png" alt="Hub Logo">
-        Code Runner Hub
+        <img src="https://s3-new.macosicons.com/macosicons/parse/Unity_Hub_AnUb3YN7hI_lowResPng-01396c6e5c.png" alt="GameHub Logo">
+        GameHub
       </div>
       <nav class="nav-tabs">
-        <button class="tab-btn active" data-tab="all">All Games</button>
-        <button class="tab-btn" data-tab="hydra">Hydra Network</button>
-        <button class="tab-btn" data-tab="noahh">Noahh</button>
-        <button class="tab-btn" data-tab="selenite">Selenite</button>
-        <button class="tab-btn" data-tab="alexrworlds">Alexrworlds</button>
+        <button class="tab-btn active" data-tab="all">
+          <img src="https://img.icons8.com/fluency/48/grid.png" alt="All"> All Games
+        </button>
+        <button class="tab-btn" data-tab="hydra">
+          <img src="https://github.com/jorgeasantiago904-design/hydra-logo/blob/main/hydra.png?raw=true" alt="Hydra"> Hydra Network
+        </button>
+        <button class="tab-btn" data-tab="noahh">
+          <img src="https://github.com/jorgeasantiago904-design/Noahs-Calculus-Tutor/blob/master/cuh.png?raw=true" alt="Noahh"> Noahh
+        </button>
+        <button class="tab-btn" data-tab="selenite">
+          <img src="https://selenite1.freetls.fastly.net/data/1722049543147626500/b893c7c1-b208-429f-b362-a263003a8630.webp" alt="Selenite"> Selenite
+        </button>
       </nav>
     </div>
     <div class="search-container">
       <div class="search-box">
+        <img src="https://img.icons8.com/fluency/48/search.png" alt="Search">
         <input type="text" id="searchInput" placeholder="Search games...">
       </div>
-      <div class="game-count-badge" id="gameCountBadge">Games: <span id="gameCount">0</span></div>
+      <div class="game-count-badge" id="gameCountBadge">
+        <img src="https://img.icons8.com/fluency/48/arcade.png" alt="Badge">
+        Games: <span id="gameCount">0</span>
+      </div>
     </div>
   </header>
 
@@ -499,37 +541,34 @@
             <img src="https://img.icons8.com/fluency/48/download.png" alt="Download"> Download Source
           </button>
           <button id="closeBtn" class="btn btn-danger">
-            <img src="https://img.icons8.com/fluency/48/delete-sign.png" alt="Close"> Close
+            <img src="https://img.icons8.com/fluency/48/close-window.png" alt="Close"> Close
           </button>
         </div>
       </div>
       <div class="iframe-wrapper">
         <div id="runnerStatus" class="runner-status">
-          <div class="spinner"></div>
-          <span id="statusText">
-            <img src="https://img.icons8.com/color/48/flash-on.png" alt="Lightning" style="width:22px;height:22px;">
-            Code Runner: Fetching Source...
-          </span>
+          <img id="runnerImg" src="https://img.icons8.com/?size=100&amp;id=33889&amp;format=png&amp;color=FFFFFF" class="runner-icon spinner" alt="Status Icon">
+          <span id="statusText">Loading game...</span>
         </div>
-        <iframe id="gameIframe" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+        <iframe id="gameIframe" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-modals allow-pointer-lock allow-downloads"></iframe>
       </div>
     </div>
   </div>
 
   <script>
-    const FALLBACK_IMG = "https://via.placeholder.com/400x250/18181c/7289da?text=No+Image";
+    const FALLBACK_IMG = "https://via.placeholder.com/400x250/141418/ffffff?text=No+Image";
+    const LOADING_ICON = "https://img.icons8.com/?size=100&id=33889&format=png&color=FFFFFF";
+    const ERROR_ICON = "https://img.icons8.com/?size=100&id=6SQJcUEPQTXf&format=png&color=FFFFFF";
 
-    const BASE_CDN = "https://cdn.jsdelivr.net/gh/1234chromebook1234-creator/hh@main/";
-    const BASE_RAW_GITHUB = "https://raw.githubusercontent.com/1234chromebook1234-creator/hh/main/";
-    const GAMES_FOLDER = "gmes/";
+    const BASE_CDN_HYDRA = "https://cdn.jsdelivr.net/gh/1234chromebook1234-creator/hh@main/";
+    const GAMES_FOLDER_HYDRA = "gmes/";
 
-    const ALEXRWORLDS_JSON = "https://cdn.jsdelivr.net/gh/jorgeasantiago904-design/games.json@main/singlefilegames.json";
+    const BASE_CDN_NOAHH = "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games/";
 
     const DATA = {
       hydra: [],
       noahh: [],
       selenite: [],
-      alexrworlds: [],
       all: []
     };
 
@@ -557,7 +596,7 @@
     // LOAD HYDRA NETWORK SOURCE
     async function loadHydra() {
       try {
-        const r = await fetch(BASE_CDN + "gmes.json");
+        const r = await fetch(BASE_CDN_HYDRA + "gmes.json");
         if (!r.ok) return;
         const d = await r.json();
         let rawArray = safeArray(d);
@@ -571,11 +610,11 @@
           if (!file) return null;
           
           file = String(file).replace(/^\/+/, "");
-          let rawGameUrl = file.startsWith("http") ? file : (BASE_RAW_GITHUB + (file.startsWith(GAMES_FOLDER) ? file : GAMES_FOLDER + file));
+          let rawGameUrl = file.startsWith("http") ? file : (BASE_CDN_HYDRA + (file.startsWith(GAMES_FOLDER_HYDRA) ? file : GAMES_FOLDER_HYDRA + file));
 
           let thumb = g.thumb || g.image || g.img || g.thumbnail || FALLBACK_IMG;
           if (thumb !== FALLBACK_IMG && !thumb.startsWith("http")) {
-            thumb = BASE_CDN + thumb.replace(/^\/+/, "");
+            thumb = BASE_CDN_HYDRA + thumb.replace(/^\/+/, "");
           }
           
           return { 
@@ -594,7 +633,7 @@
     // LOAD NOAHH SOURCE
     async function loadNoahh() {
       try {
-        const r = await fetch("https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games.js");
+        const r = await fetch("https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games.js");
         if (!r.ok) return;
         const jsText = await r.text();
         
@@ -632,17 +671,17 @@
             fileName += '.html';
           }
 
-          const rawGithubUrl = `https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/${fileName}`;
+          const rawCdnUrl = `${BASE_CDN_NOAHH}${fileName}`;
 
           if (rawImg !== FALLBACK_IMG && !rawImg.startsWith("http") && !rawImg.startsWith("data:")) {
-            rawImg = `https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/${rawImg.replace(/^\/+/, '')}`;
+            rawImg = `https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/${rawImg.replace(/^\/+/, '')}`;
           }
 
           return {
             name: title,
             description: description,
             img: rawImg,
-            url: rawGithubUrl,
+            url: rawCdnUrl,
             source: "noahh"
           };
         }).filter(Boolean));
@@ -674,41 +713,17 @@
       }
     }
 
-    // LOAD ALEXRWORLDS SOURCE
-    async function loadAlexrworlds() {
-      try {
-        const r = await fetch(ALEXRWORLDS_JSON);
-        if (!r.ok) return;
-        const d = await r.json();
-        DATA.alexrworlds = dedupeGames(safeArray(d).map(g => {
-          if (!g) return null;
-          const title = g.title || g.name || "Unknown";
-          return {
-            name: title,
-            description: g.description || "",
-            img: g.img || g.image || g.thumbnail || FALLBACK_IMG,
-            url: g.url || g.link || ("/app-viewer/alexr-world-s/?view=" + encodeURIComponent(title)),
-            source: "alexrworlds"
-          };
-        }).filter(Boolean));
-      } catch (e) {
-        console.error("Error loading Alexrworlds games:", e);
-      }
-    }
-
     async function initData() {
       await Promise.all([
         loadHydra(),
         loadNoahh(),
-        loadSelenite(),
-        loadAlexrworlds()
+        loadSelenite()
       ]);
 
       DATA.all = dedupeGames([
         ...DATA.hydra, 
         ...DATA.noahh, 
-        ...DATA.selenite,
-        ...DATA.alexrworlds
+        ...DATA.selenite
       ]);
       updateTabDisplay();
     }
@@ -719,6 +734,7 @@
     const playerModal = document.getElementById('playerModal');
     const gameIframe = document.getElementById('gameIframe');
     const runnerStatus = document.getElementById('runnerStatus');
+    const runnerImg = document.getElementById('runnerImg');
     const statusText = document.getElementById('statusText');
     const activeGameTitle = document.getElementById('activeGameTitle');
     const activeGameDesc = document.getElementById('activeGameDesc');
@@ -728,7 +744,6 @@
       if (activeTab === "hydra") return DATA.hydra;
       if (activeTab === "noahh") return DATA.noahh;
       if (activeTab === "selenite") return DATA.selenite;
-      if (activeTab === "alexrworlds") return DATA.alexrworlds;
       return DATA.all;
     }
 
@@ -782,7 +797,7 @@
       });
     }
 
-    // CODE RUNNER ENGINE
+    // CODE RUNNER ENGINE FIX
     async function runGameCode(game) {
       currentGame = game;
       currentRawCode = "";
@@ -791,10 +806,14 @@
       
       playerModal.classList.add('active');
       runnerStatus.classList.remove('hidden');
-      statusText.innerHTML = `<img src="https://img.icons8.com/color/48/flash-on.png" style="width:22px;height:22px;"> Code Runner: Loading Game Source...`;
 
-      // Direct iframe embedding for web-hosted sources that allow cross-origin framing
-      if (game.source === "selenite" || game.source === "alexrworlds") {
+      // Set Loading state
+      runnerImg.src = LOADING_ICON;
+      runnerImg.classList.add('spinner');
+      statusText.textContent = "Loading game...";
+
+      // Direct iframe framing for proxy-hosted sources like Selenite
+      if (game.source === "selenite") {
         gameIframe.removeAttribute('srcdoc');
         gameIframe.src = game.url;
         setTimeout(() => runnerStatus.classList.add('hidden'), 500);
@@ -802,19 +821,18 @@
       }
 
       try {
+        // Fetch via CDN with proper CORS headers
         const response = await fetch(game.url);
-        if (!response.ok) throw new Error("Could not fetch game raw code.");
+        if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
         
         currentRawCode = await response.text();
 
-        statusText.innerHTML = `<img src="https://img.icons8.com/color/48/flash-on.png" style="width:22px;height:22px;"> Code Runner: Compiling & executing game...`;
+        statusText.textContent = "Loading game...";
 
+        // Calculate relative base URL so scripts, css, images inside the game bundle load seamlessly
         let baseHref = "";
-        if (game.source === "hydra") {
-          const relativeFolder = game.url.replace(BASE_RAW_GITHUB, "");
-          baseHref = BASE_CDN + relativeFolder.substring(0, relativeFolder.lastIndexOf('/') + 1);
-        } else if (game.source === "noahh") {
-          baseHref = "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games/";
+        if (game.url.startsWith("http")) {
+          baseHref = game.url.substring(0, game.url.lastIndexOf('/') + 1);
         }
 
         let injectedCode = currentRawCode;
@@ -832,17 +850,21 @@
 
         setTimeout(() => {
           runnerStatus.classList.add('hidden');
-        }, 400);
+        }, 300);
 
       } catch (err) {
-        console.error("Code Runner Error:", err);
-        statusText.innerHTML = `<img src="https://img.icons8.com/color/48/error.png" style="width:22px;height:22px;"> Failed to fetch raw code. Loading direct frame...`;
+        console.warn("Code Runner Fetch Error, executing fallback iframe direct connection:", err);
         
+        // Switch to Error state icon & message
+        runnerImg.src = ERROR_ICON;
+        runnerImg.classList.remove('spinner');
+        statusText.textContent = "Error detected";
+
         setTimeout(() => {
           gameIframe.removeAttribute('srcdoc');
           gameIframe.src = game.url;
           runnerStatus.classList.add('hidden');
-        }, 1200);
+        }, 800);
       }
     }
 
@@ -855,7 +877,7 @@
       currentRawCode = "";
     }
 
-    // Tab Navigation Switcher
+    // Navigation Switcher
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
